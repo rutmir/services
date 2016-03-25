@@ -1,0 +1,4 @@
+*.iml
+core/log/.idea
+core/memcache/.idea
+
