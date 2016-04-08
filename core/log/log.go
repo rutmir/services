@@ -23,6 +23,7 @@ const (
 	LEVEL_NOTICE                 // 5
 	LEVEL_INFO                   // 6
 	LEVEL_DEBUG                  // 7
+	LEVEL_FATAL                  // 8
 )
 
 var settings *LogSettings
@@ -93,6 +94,15 @@ func Debug(v ...interface{}) {
 	doLocalLog(str, LEVEL_DEBUG, file, line)
 }
 
+// Fatal
+func Fatal(v ...interface{}) {
+	str := extractString(v ...)
+	file, line := extractPath()
+
+	doLocalLog(str, LEVEL_FATAL, file, line)
+	os.Exit(1)
+}
+
 func extractPath() (string, int) {
 	_, file, line, ok := runtime.Caller(2)
 	if !ok {
@@ -130,6 +140,9 @@ func doLocalLog(str string, level Level, file string, line int) {
 		break
 	case LEVEL_CRITICAL:
 		levelStr = "Critical"
+		break
+	case LEVEL_FATAL:
+		levelStr = "Fatal"
 		break
 	default:
 		levelStr = "-"

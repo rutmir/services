@@ -23,6 +23,7 @@ type Item struct {
 
 }
 
+// ToString stringify Item object
 func (f *Item) ToString() string {
 	//return fmt.Sprintf("Item@ Key: %s, Value: %v, Expiration: %v", f.Key, f.Value, time.Unix(f.Expiration, 0).UTC())
 	return fmt.Sprintf("Item@ Key: %s, Value: %v, Expiration: %v", f.Key, f.Value, f.Expiration)

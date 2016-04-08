@@ -1,4 +1,8 @@
 *.iml
 core/log/.idea
 core/memcache/.idea
-
+core/messaging/.idea
+core/tcp-server/.idea
+entities/.idea
+web-rest/.idea
+*.exe

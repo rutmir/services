@@ -1,0 +1,98 @@
+#application: gab
+version: api-01
+runtime: go
+api_version: go1
+
+handlers:
+#- url: /static/(.*)
+#  static_files: static/\1
+#  upload: static/.*
+#  http_headers:
+#    Access-Control-Allow-Origin: .*
+
+#- url: /.*
+#  script: _go_app
+#  secure: always
+
+# rest api routes
+- url: /api/(.*)
+  script: _go_app
+  secure: always
+
+# static web fron-end routes
+- url: /(.*\.css)
+  mime_type: text/css
+  static_files: static/\1
+  upload: static/(.*\.css)
+
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.html)
+
+- url: /(.*\.js)
+  mime_type: text/javascript
+  static_files: static/\1
+  upload: static/(.*\.js)
+
+- url: /(.*\.txt)
+  mime_type: text/plain
+  static_files: static/\1
+  upload: static/(.*\.txt)
+
+- url: /(.*\.xml)
+  mime_type: application/xml
+  static_files: static/\1
+  upload: static/(.*\.xml)
+
+# image files
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  static_files: static/\1
+  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+
+# font files
+- url: /fonts/(.*\.eot)
+  static_files: static/fonts/\1
+  upload: static/fonts/(.*\.eot)
+  mime_type: application/vnd.ms-fontobject
+
+- url: /fonts/(.*\.svg)
+  static_files: static/fonts/\1
+  upload: static/fonts/(.*\.svg)
+  mime_type: image/svg+xml
+
+- url: /fonts/(.*\.ttf)
+  static_files: static/fonts/\1
+  upload: static/fonts/(.*\.ttf)
+  mime_type: application/font-ttf
+
+- url: /fonts/(.*\.woff)
+  static_files: static/fonts/\1
+  upload: static/fonts/(.*\.woff)
+  mime_type: application/font-woff
+
+- url: /fonts/(.*\.woff2)
+  static_files: static/fonts/\1
+  upload: static/fonts/(.*\.woff2)
+  mime_type: application/font-woff2
+
+# index files
+- url: /(.+)/
+  static_files: static/\1/index.html
+  upload: static/(.+)/index.html
+
+# redirect to 'url + /index.html' url.
+- url: /(.+)
+  static_files: static/redirector.html
+  upload: static/redirector.html
+
+# site root
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+
+#skip_files:
+#  key.p12
+#  cors-json-file.json
+#  enable-cors.sh
+#  ^(.*/)?\.bak$

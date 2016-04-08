@@ -2,11 +2,12 @@ package memcache
 
 import (
 	"fmt"
-	mc "github.com/bradfitz/gomemcache/memcache"
 	"time"
+
+	mc "github.com/bradfitz/gomemcache/memcache"
 )
 
-// MemCache
+// MemCache interface provide functions to operate with memcached
 type MemCache interface {
 	Get(key string) (item *Item, err error)
 	GetMulti(keys []string) (map[string]*Item, error)
@@ -24,11 +25,12 @@ type memcachedObject struct {
 }
 
 const (
-	MEM_CACHED sourceType = iota // 0
+	// MemcacheD enum item for MemCache source type
+	MemcacheD sourceType = iota // 0
 )
 
 /* MemCached implementation */
-// Get
+// Get return Item object from memcached
 func (f *memcachedObject) Get(key string) (*Item, error) {
 	item, err := f.Client.Get(f.Prefix + key)
 	if err != nil {
@@ -38,7 +40,7 @@ func (f *memcachedObject) Get(key string) (*Item, error) {
 	return createItem(item, f.Prefix), nil
 }
 
-// GetMulti
+// GetMulti return array objects from memcached
 func (f *memcachedObject) GetMulti(keys []string) (map[string]*Item, error) {
 	newKeys := make([]string, len(keys))
 	for _, item := range keys {
@@ -57,27 +59,27 @@ func (f *memcachedObject) GetMulti(keys []string) (map[string]*Item, error) {
 	return result, nil
 }
 
-// Touch
+// Touch prolong expiration for object in memcached
 func (f *memcachedObject) Touch(key string, seconds int32) error {
 	return f.Client.Touch(key, seconds)
 }
 
-// Set
+// Set Item object in memcached
 func (f *memcachedObject) Set(item *Item) error {
 	return f.Client.Set(&mc.Item{Key: f.Prefix + item.Key, Value: item.Value, Expiration: item.Expiration})
 }
 
 // Delete
 func (f *memcachedObject) Delete(key string) error {
-	return f.Delete(f.Prefix + key)
+	return f.Client.Delete(f.Prefix + key)
 }
 
-// GetInstance
+// GetInstance return instance of MemCache object
 func GetInstance(cacheTarget, prefix string, v ...string) (MemCache, error) {
 	switch cacheTarget {
 	case "memcached":
 		result := new(memcachedObject)
-		result.Source = MEM_CACHED
+		result.Source = MemcacheD
 		result.Prefix = prefix + "_"
 		result.Client = mc.New(v...)
 		result.Client.Timeout = time.Second * 5
