@@ -11,6 +11,7 @@ type OnErrorHandler func(error)
 type OnCloseHandler func()
 type ServerType string
 
+// NetServer type for net server instance
 type NetServer struct {
 	Type         ServerType
 	Host         string
@@ -20,6 +21,7 @@ type NetServer struct {
 	OnConnection OnConnectionHandler
 }
 
+// Run start listening on providen port
 func (ns *NetServer) Run() error {
 	err := validateNetServer(ns)
 	if err != nil {
@@ -46,6 +48,7 @@ func (ns *NetServer) Run() error {
 	}
 }
 
+// NetSocket type for net socket instance
 type NetSocket struct {
 	connection net.Conn
 	OnData     OnDataHandler
@@ -53,10 +56,12 @@ type NetSocket struct {
 	OnError    OnErrorHandler
 }
 
+// Write bytes into socket
 func (ns *NetSocket) Write(b []byte) (n int, err error) {
 	return ns.connection.Write(b)
 }
 
+// Close socket
 func (ns *NetSocket) Close() error {
 	if ns.OnClose != nil {
 		ns.OnClose()
@@ -66,51 +71,35 @@ func (ns *NetSocket) Close() error {
 }
 
 const (
-	ServerTypeTcp ServerType = "tcp"
-	ServerTypeUdp ServerType = "udp"
+	ServerTypeTcp ServerType = "tcp" // ServerTypeTcp strong typing for TCP server
+	ServerTypeUdp ServerType = "udp" // ServerTypeUdp strong typing for UPD server
 )
 
+// CreateServer return new instance of NetServer
 func CreateServer() *NetServer {
 	return new(NetServer)
 }
 
-/*func startServer(serverType ServerType, host, port string) {
-	// Listen for incoming connections.
-	l, err := net.Listen(string(serverType), host + ":" + port)
-	if err != nil {
-		fmt.Println("Error listening:", err.Error())
-		os.Exit(1)
-	}
-	// Close the listener when the application closes.
-	defer l.Close()
-	fmt.Println("Listening on " + host + ":" + port)
-	for {
-		// Listen for an incoming connection.
-		conn, err := l.Accept()
-		if err != nil {
-			fmt.Println("Error accepting: ", err.Error())
-			os.Exit(1)
-		}
-		// Handle connections in a new goroutine.
-		go handleRequest(conn)
-	}
-}*/
-
-// Handles incoming requests.
-func handleConnection(conn *NetSocket, bufferSize int) {
+func handleConnection(socket *NetSocket, bufferSize int) {
 	buf := make([]byte, bufferSize)
-	reqLen, err := conn.connection.Read(buf)
-	if err != nil {
-		fmt.Println("Error reading:", err.Error())
+	defer socket.Close()
+
+	for {
+		reqLen, err := socket.connection.Read(buf)
+		if err != nil {
+			if socket.OnError != nil {
+				socket.OnError(err)
+			}
+			break
+		}
+
+		if reqLen == 0 {
+			break
+		} else {
+			socket.OnData(buf)
+		}
+		buf = make([]byte, bufferSize)
 	}
-
-	conn.OnData(buf)
-
-	fmt.Println("Read from socket:", reqLen)
-	// Send a response back to person contacting us.
-	conn.Write([]byte("Message received."))
-	// Close the connection when you're done with it.
-	conn.Close()
 }
 
 func validateNetServer(ns *NetServer) error {

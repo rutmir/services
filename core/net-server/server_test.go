@@ -22,6 +22,7 @@ func TestMain(m *testing.M) {
 
 		socket.OnData = func(data []byte) {
 			fmt.Println("I get new data.")
+			socket.Write([]byte("Message received."))
 		}
 	}
 
