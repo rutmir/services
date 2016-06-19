@@ -28,3 +28,4 @@ for chat-worker:</br>
 - AMQP_PORT =</br>
 - AMQP_USERNAME =</br>
 - AMQP_PASS =</br>
+- MEMCACHE_URL = </br>
