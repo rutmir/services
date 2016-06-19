@@ -2,10 +2,9 @@
 
 Required envirinment parameters
 
-for chat-rest:
+for chat-rest:</br>
 LOG_PATH_SEPARATOR = /services
 
-for chat-endpoint & chat-worker 
 LOG_PATH_SEPARATOR = /services
 AMQP_HOST =
 AMQP_PORT =
