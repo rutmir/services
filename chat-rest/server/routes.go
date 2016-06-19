@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"github.com/rutmir/services/web-rest/server/controllers"
+	"github.com/rutmir/services/chat-rest/server/controllers"
 )
 
 type Route struct {

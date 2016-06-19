@@ -154,6 +154,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
@@ -164,9 +165,18 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chat-endpoint" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chat-endpoint" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -915,15 +925,16 @@
       <workItem from="1466111469553" duration="172000" />
       <workItem from="1466321360036" duration="814000" />
       <workItem from="1466322333317" duration="630000" />
+      <workItem from="1466323338232" duration="650000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57072000" />
+    <option name="totallyTimeSpent" value="57722000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -932,6 +943,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -941,14 +953,13 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -974,6 +985,74 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#321#0" expanded="true" />
+            <element signature="e#591#612#0" expanded="false" />
+            <element signature="e#1059#1065#0" expanded="false" />
+            <element signature="e#1102#1146#0" expanded="false" />
+            <element signature="e#1174#1224#0" expanded="false" />
+            <element signature="e#1781#1860#0" expanded="false" />
+            <element signature="e#1944#1975#0" expanded="false" />
+            <element signature="e#2091#2508#0" expanded="false" />
+            <element signature="n#!!block;n#initAmqp#0" expanded="false" />
+            <element signature="e#2600#2679#0" expanded="false" />
+            <element signature="e#2732#2811#0" expanded="false" />
+            <element signature="e#2868#2951#0" expanded="false" />
+            <element signature="e#3012#3091#0" expanded="false" />
+            <element signature="e#3258#3310#0" expanded="false" />
+            <element signature="e#3354#3422#0" expanded="false" />
+            <element signature="e#3627#3680#0" expanded="false" />
+            <element signature="e#3895#3973#0" expanded="false" />
+            <element signature="e#4037#4130#0" expanded="false" />
+            <element signature="e#4219#4312#0" expanded="false" />
+            <element signature="e#4595#4720#0" expanded="false" />
+            <element signature="e#4944#5073#0" expanded="false" />
+            <element signature="n#!!block;n#handlePackage#0" expanded="false" />
+            <element signature="n#!!block;n#handleResponse#0" expanded="false" />
+            <element signature="e#5502#5522#0" expanded="false" />
+            <element signature="e#5528#6513#0" expanded="false" />
+            <element signature="e#5564#6271#0" expanded="false" />
+            <element signature="e#5735#5758#0" expanded="false" />
+            <element signature="e#5764#6267#0" expanded="false" />
+            <element signature="e#5865#6262#0" expanded="false" />
+            <element signature="e#5947#6021#0" expanded="false" />
+            <element signature="e#6156#6183#0" expanded="false" />
+            <element signature="e#6189#6223#0" expanded="false" />
+            <element signature="e#6277#6510#0" expanded="false" />
+            <element signature="e#6447#6470#0" expanded="false" />
+            <element signature="e#6476#6506#0" expanded="false" />
+            <element signature="n#!!block;n#responseUnauthorized#0" expanded="false" />
+            <element signature="e#6871#6891#0" expanded="false" />
+            <element signature="n#!!block;n#responseBadRequest#0" expanded="false" />
+            <element signature="e#7291#7310#0" expanded="false" />
+            <element signature="e#7316#7363#0" expanded="false" />
+            <element signature="n#!!block;n#responseInternalError#0" expanded="false" />
+            <element signature="e#7727#7746#0" expanded="false" />
+            <element signature="e#7752#7799#0" expanded="false" />
+            <element signature="n#!!block;n#writeToSocket#0" expanded="false" />
+            <element signature="e#7917#7923#0" expanded="false" />
+            <element signature="e#8104#8123#0" expanded="false" />
+            <element signature="e#8453#8655#0" expanded="false" />
+            <element signature="e#8516#8549#0" expanded="false" />
+            <element signature="e#8596#8635#0" expanded="false" />
+            <element signature="e#8949#9098#0" expanded="false" />
+            <element signature="e#9117#9173#0" expanded="false" />
+            <element signature="e#9289#9347#0" expanded="false" />
+            <element signature="e#9461#9539#0" expanded="false" />
+            <element signature="e#9663#9752#0" expanded="false" />
+            <element signature="n#!!block;n#runWorkerPipe#0" expanded="false" />
+            <element signature="n#!!block;n#destroyEndPoint#0" expanded="false" />
+            <element signature="e#10157#10186#0" expanded="false" />
+            <element signature="e#10217#10249#0" expanded="false" />
+            <element signature="e#10277#10305#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">

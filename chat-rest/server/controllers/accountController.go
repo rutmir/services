@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rutmir/services/chat-rest/server/responses"
 	"github.com/rutmir/services/core/log"
 	models "github.com/rutmir/services/entities/models/v2"
-	"github.com/rutmir/services/web-rest/server/responses"
 	"gopkg.in/mgo.v2/bson"
 )
 

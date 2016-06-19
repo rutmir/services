@@ -26,25 +26,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="router.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/router.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding>
-                <element signature="e#15#110#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="authorizationController.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/controllers/authorizationController.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="408">
               <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
               <folding>
-                <element signature="e#21#400#0" expanded="true" />
+                <element signature="e#21#402#0" expanded="true" />
                 <element signature="n#!!block;n#clearMem#0" expanded="false" />
               </folding>
             </state>
@@ -57,7 +45,7 @@
             <state relative-caret-position="204">
               <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding>
-                <element signature="e#16#97#0" expanded="true" />
+                <element signature="e#16#98#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -69,38 +57,38 @@
             <state relative-caret-position="1445">
               <caret line="105" column="15" selection-start-line="105" selection-start-column="10" selection-end-line="105" selection-end-column="15" />
               <folding>
-                <element signature="e#21#327#0" expanded="true" />
-                <element signature="e#385#478#0" expanded="false" />
-                <element signature="e#494#553#0" expanded="false" />
+                <element signature="e#21#328#0" expanded="true" />
+                <element signature="e#386#479#0" expanded="false" />
+                <element signature="e#495#554#0" expanded="false" />
                 <element signature="n#!!block;n#toString#0" expanded="false" />
-                <element signature="e#727#819#0" expanded="false" />
+                <element signature="e#728#820#0" expanded="false" />
                 <element signature="n#!!block;n#toString#1" expanded="false" />
-                <element signature="e#1160#1182#0" expanded="false" />
+                <element signature="e#1161#1183#0" expanded="false" />
                 <element signature="n#!!block;n#parseGrant#0" expanded="false" />
-                <element signature="e#2384#3163#0" expanded="false" />
-                <element signature="e#2415#3107#0" expanded="false" />
-                <element signature="e#2449#2818#0" expanded="false" />
-                <element signature="e#2667#2758#0" expanded="false" />
-                <element signature="e#2821#3102#0" expanded="false" />
-                <element signature="e#2982#3050#0" expanded="false" />
+                <element signature="e#2385#3164#0" expanded="false" />
+                <element signature="e#2416#3108#0" expanded="false" />
+                <element signature="e#2450#2819#0" expanded="false" />
+                <element signature="e#2668#2759#0" expanded="false" />
+                <element signature="e#2822#3103#0" expanded="false" />
+                <element signature="e#2983#3051#0" expanded="false" />
                 <element signature="n#!!block;n#generateToken#0" expanded="false" />
-                <element signature="e#3316#3337#0" expanded="false" />
+                <element signature="e#3317#3338#0" expanded="false" />
                 <element signature="n#!!block;n#writeAuthError#0" expanded="false" />
                 <element signature="n#!!block;n#writeAuthErrorJSON#0" expanded="false" />
-                <element signature="e#3787#3857#0" expanded="false" />
-                <element signature="e#3863#3956#0" expanded="false" />
+                <element signature="e#3788#3858#0" expanded="false" />
+                <element signature="e#3864#3957#0" expanded="false" />
                 <element signature="n#!!block;n#writeErrorJSON#0" expanded="false" />
-                <element signature="e#4119#4190#0" expanded="false" />
-                <element signature="e#4196#4290#0" expanded="false" />
+                <element signature="e#4120#4191#0" expanded="false" />
+                <element signature="e#4197#4291#0" expanded="false" />
                 <element signature="n#!!block;n#returnJson#0" expanded="false" />
-                <element signature="e#4450#4593#0" expanded="false" />
-                <element signature="e#4599#4816#0" expanded="false" />
+                <element signature="e#4451#4594#0" expanded="false" />
+                <element signature="e#4600#4817#0" expanded="false" />
                 <element signature="n#!!block;n#checkUserName#0" expanded="false" />
-                <element signature="e#4965#5020#0" expanded="false" />
-                <element signature="e#5045#5069#0" expanded="false" />
+                <element signature="e#4966#5021#0" expanded="false" />
+                <element signature="e#5046#5070#0" expanded="false" />
                 <element signature="n#!!block;n#checkExistLocalAccountForProfile#0" expanded="false" />
-                <element signature="e#5266#5319#0" expanded="false" />
-                <element signature="e#5344#5368#0" expanded="false" />
+                <element signature="e#5267#5320#0" expanded="false" />
+                <element signature="e#5345#5369#0" expanded="false" />
                 <element signature="n#!!block;n#createLocalAccount#0" expanded="false" />
                 <element signature="n#!!block;n#createUserProfile#0" expanded="false" />
               </folding>
@@ -111,7 +99,7 @@
       <file leaf-file-name="main.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
+            <state relative-caret-position="306">
               <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
               <folding>
                 <element signature="e#72#229#0" expanded="true" />
@@ -130,36 +118,59 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="accountController.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/controllers/accountController.go">
+      <file leaf-file-name="app.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+            <state relative-caret-position="255">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
-                <element signature="e#21#245#0" expanded="true" />
-                <element signature="n#!!block;n#populateUserAccount#0" expanded="false" />
+                <element signature="e#14#110#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mongo.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/dal/mongo.go">
+      <file leaf-file-name="routes.go" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/routes.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+            <state relative-caret-position="289">
+              <caret line="17" column="20" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
+              <folding>
+                <element signature="e#16#98#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="authorizationController.go" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/authorizationController.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="194">
+              <caret line="12" column="57" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.go" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app.go">
+      <file leaf-file-name="common.go" pinned="false" current-in-tab="true">
+        <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/common.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            <state relative-caret-position="425">
+              <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
               <folding>
-                <element signature="e#14#110#0" expanded="true" />
+                <element signature="e#21#328#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="accountController.go" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/accountController.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+              <folding>
+                <element signature="e#21#246#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -203,6 +214,10 @@
         <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/chat-rest.iml" />
         <option value="$PROJECT_DIR$/app.go" />
+        <option value="C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/routes.go" />
+        <option value="C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/authorizationController.go" />
+        <option value="C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/accountController.go" />
+        <option value="C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/common.go" />
       </list>
     </option>
   </component>
@@ -269,6 +284,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
@@ -327,7 +343,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -337,7 +352,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.24942529" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -1102,11 +1117,12 @@
       <workItem from="1466321498460" duration="366000" />
       <workItem from="1466321889517" duration="287000" />
       <workItem from="1466322366689" duration="711000" />
+      <workItem from="1466323389258" duration="617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94488000" />
+    <option name="totallyTimeSpent" value="95105000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1119,21 +1135,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33766234" sideWeight="0.5063966" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33766234" sideWeight="0.4936034" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33766234" sideWeight="0.4936034" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.49573562" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25586355" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25586355" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1144,9 +1162,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1171,37 +1187,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="42" column="1" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Go.Path/src/github.com/codegangsta/negroni/static.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="32" column="7" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/router.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="19" column="55" selection-start-line="19" selection-start-column="55" selection-end-line="19" selection-end-column="55" />
-          <folding>
-            <element signature="e#15#110#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="12" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/routes.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -1221,7 +1206,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#21#400#0" expanded="true" />
+            <element signature="e#21#402#0" expanded="true" />
             <element signature="n#!!block;n#clearMem#0" expanded="false" />
           </folding>
         </state>
@@ -1452,10 +1437,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="629">
           <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
-          <folding>
-            <element signature="e#21#245#0" expanded="true" />
-            <element signature="n#!!block;n#populateUserAccount#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1474,7 +1456,7 @@
         <state relative-caret-position="204">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding>
-            <element signature="e#16#97#0" expanded="true" />
+            <element signature="e#16#98#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1484,38 +1466,38 @@
         <state relative-caret-position="1445">
           <caret line="105" column="15" selection-start-line="105" selection-start-column="10" selection-end-line="105" selection-end-column="15" />
           <folding>
-            <element signature="e#21#327#0" expanded="true" />
-            <element signature="e#385#478#0" expanded="false" />
-            <element signature="e#494#553#0" expanded="false" />
+            <element signature="e#21#328#0" expanded="true" />
+            <element signature="e#386#479#0" expanded="false" />
+            <element signature="e#495#554#0" expanded="false" />
             <element signature="n#!!block;n#toString#0" expanded="false" />
-            <element signature="e#727#819#0" expanded="false" />
+            <element signature="e#728#820#0" expanded="false" />
             <element signature="n#!!block;n#toString#1" expanded="false" />
-            <element signature="e#1160#1182#0" expanded="false" />
+            <element signature="e#1161#1183#0" expanded="false" />
             <element signature="n#!!block;n#parseGrant#0" expanded="false" />
-            <element signature="e#2384#3163#0" expanded="false" />
-            <element signature="e#2415#3107#0" expanded="false" />
-            <element signature="e#2449#2818#0" expanded="false" />
-            <element signature="e#2667#2758#0" expanded="false" />
-            <element signature="e#2821#3102#0" expanded="false" />
-            <element signature="e#2982#3050#0" expanded="false" />
+            <element signature="e#2385#3164#0" expanded="false" />
+            <element signature="e#2416#3108#0" expanded="false" />
+            <element signature="e#2450#2819#0" expanded="false" />
+            <element signature="e#2668#2759#0" expanded="false" />
+            <element signature="e#2822#3103#0" expanded="false" />
+            <element signature="e#2983#3051#0" expanded="false" />
             <element signature="n#!!block;n#generateToken#0" expanded="false" />
-            <element signature="e#3316#3337#0" expanded="false" />
+            <element signature="e#3317#3338#0" expanded="false" />
             <element signature="n#!!block;n#writeAuthError#0" expanded="false" />
             <element signature="n#!!block;n#writeAuthErrorJSON#0" expanded="false" />
-            <element signature="e#3787#3857#0" expanded="false" />
-            <element signature="e#3863#3956#0" expanded="false" />
+            <element signature="e#3788#3858#0" expanded="false" />
+            <element signature="e#3864#3957#0" expanded="false" />
             <element signature="n#!!block;n#writeErrorJSON#0" expanded="false" />
-            <element signature="e#4119#4190#0" expanded="false" />
-            <element signature="e#4196#4290#0" expanded="false" />
+            <element signature="e#4120#4191#0" expanded="false" />
+            <element signature="e#4197#4291#0" expanded="false" />
             <element signature="n#!!block;n#returnJson#0" expanded="false" />
-            <element signature="e#4450#4593#0" expanded="false" />
-            <element signature="e#4599#4816#0" expanded="false" />
+            <element signature="e#4451#4594#0" expanded="false" />
+            <element signature="e#4600#4817#0" expanded="false" />
             <element signature="n#!!block;n#checkUserName#0" expanded="false" />
-            <element signature="e#4965#5020#0" expanded="false" />
-            <element signature="e#5045#5069#0" expanded="false" />
+            <element signature="e#4966#5021#0" expanded="false" />
+            <element signature="e#5046#5070#0" expanded="false" />
             <element signature="n#!!block;n#checkExistLocalAccountForProfile#0" expanded="false" />
-            <element signature="e#5266#5319#0" expanded="false" />
-            <element signature="e#5344#5368#0" expanded="false" />
+            <element signature="e#5267#5320#0" expanded="false" />
+            <element signature="e#5345#5369#0" expanded="false" />
             <element signature="n#!!block;n#createLocalAccount#0" expanded="false" />
             <element signature="n#!!block;n#createUserProfile#0" expanded="false" />
           </folding>
@@ -1527,7 +1509,7 @@
         <state relative-caret-position="408">
           <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
           <folding>
-            <element signature="e#21#400#0" expanded="true" />
+            <element signature="e#21#402#0" expanded="true" />
             <element signature="n#!!block;n#clearMem#0" expanded="false" />
           </folding>
         </state>
@@ -1549,7 +1531,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
+        <state relative-caret-position="306">
           <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
           <folding>
             <element signature="e#72#229#0" expanded="true" />
@@ -1567,10 +1549,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        <state relative-caret-position="255">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
             <element signature="e#14#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/routes.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="20" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
+          <folding>
+            <element signature="e#16#98#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/authorizationController.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="12" column="57" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/accountController.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+          <folding>
+            <element signature="e#21#246#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go.Path/src/github.com/rutmir/services/chat-rest/server/controllers/common.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
+          <folding>
+            <element signature="e#21#328#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1627,7 +1647,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>server</last-edited>
+          <last-edited>chat-rest</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

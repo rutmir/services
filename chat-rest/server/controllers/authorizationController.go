@@ -6,12 +6,12 @@ import (
 	"gopkg.in/mgo.v2/bson"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/rutmir/services/chat-rest/server/dal"
+	"github.com/rutmir/services/chat-rest/server/responses"
 	"github.com/rutmir/services/core/log"
 	"github.com/rutmir/services/core/memcache"
 	dto "github.com/rutmir/services/entities/dto/v2"
 	models "github.com/rutmir/services/entities/models/v2"
-	"github.com/rutmir/services/web-rest/server/dal"
-	"github.com/rutmir/services/web-rest/server/responses"
 )
 
 const (
