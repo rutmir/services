@@ -9,11 +9,11 @@ import (
 
 	"encoding/json"
 
-	"gopkg.in/mgo.v2/bson"
 	"github.com/rutmir/services/chat-rest/server/dal"
 	"github.com/rutmir/services/core/log"
 	"github.com/rutmir/services/core/memcache"
 	models "github.com/rutmir/services/entities/models/v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 const (
