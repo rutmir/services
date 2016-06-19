@@ -2,13 +2,14 @@ package main
 
 import (
 	"os"
+	"time"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/streadway/amqp"
 
 	"github.com/rutmir/services/core/log"
+	"github.com/rutmir/services/core/memcache"
 	dto "github.com/rutmir/services/entities/dto/v2"
-	//"github.com/rutmir/services/core/memcache"
 )
 
 const (
@@ -16,14 +17,60 @@ const (
 	rtPrefix = "rt_"
 )
 
+var memCtrl memcache.MemCache
+var channel *amqp.Channel
+
 func failOnError(err error, msg string) {
 	if err != nil {
 		log.Fatal("%s: %s", msg, err)
 	}
 }
 
+func responseInternalError(d *amqp.Delivery) {
+	log.Info("Bad request response")
+	h := new(dto.Header)
+	h.Action = dto.Action_Result
+	h.Timestamp = time.Now().UnixNano()
+
+	result := new(dto.Result)
+	result.Code = 500
+	result.Result = "Error"
+	result.Message = "Internal server error"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Err(err)
+	} else {
+		msg := new(dto.InternalMessage)
+		msg.Header = h
+		msg.Body = data
+
+		if data, err := proto.Marshal(msg); err != nil {
+			log.Err(err)
+		} else {
+			err = channel.Publish(
+				"",        // exchange
+				d.ReplyTo, // routing key
+				false,     // mandatory
+				false,     // immediate
+				amqp.Publishing{
+					ContentType:   "application/x-protobuf",
+					CorrelationId: d.CorrelationId,
+					Body:          data,
+				})
+			failOnError(err, "Failed to publish a message")
+		}
+	}
+}
+
 func main() {
 	log.Info("Initialize chat worker")
+
+	var err error
+	memCtrl, err = memcache.GetLocalInstance("memcached", "test")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
 	host := os.Getenv("AMQP_HOST")
 	if len(host) == 0 {
@@ -57,11 +104,11 @@ func main() {
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
-	ch, err := conn.Channel()
+	channel, err = conn.Channel()
 	failOnError(err, "Failed to open a channel")
-	defer ch.Close()
+	defer channel.Close()
 
-	q, err := ch.QueueDeclare(
+	q, err := channel.QueueDeclare(
 		"chat_worker", // name
 		false,         // durable
 		false,         // autoDelete
@@ -71,14 +118,14 @@ func main() {
 	)
 	failOnError(err, "Failed to declare a queue")
 
-	err = ch.Qos(
+	err = channel.Qos(
 		1,     // prefetch count
 		0,     // prefetch size
 		false, // global
 	)
 	failOnError(err, "Failed to set QoS")
 
-	msgs, err := ch.Consume(
+	msgs, err := channel.Consume(
 		q.Name, // queue
 		"",     // consumer
 		false,  // auto-ack
@@ -98,9 +145,23 @@ func main() {
 			err := proto.Unmarshal(d.Body, im)
 			failOnError(err, "Failed to decode body to InternalMessage")
 
-			log.Info("Work on message: %s, action: %s", d.CorrelationId, im.Header.Action)
+			mem, err := memCtrl.Get(atPrefix + d.ReplyTo)
+			if err != nil {
+				log.Err(err)
+				responseInternalError(&d)
+				continue
+			}
 
-			err = ch.Publish(
+			auth := new(dto.AuthTokenMem)
+			if err := proto.Unmarshal(mem.Value, auth); err != nil {
+				log.Err(err)
+				responseInternalError(&d)
+				continue
+			}
+
+			log.Info("Work on message: %s, action: %s, for: %s", d.CorrelationId, im.Header.Action, auth.ProfileID.Hex())
+
+			err = channel.Publish(
 				"",        // exchange
 				d.ReplyTo, // routing key
 				false,     // mandatory

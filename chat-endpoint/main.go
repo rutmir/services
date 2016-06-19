@@ -299,7 +299,7 @@ func (ep *Endpoint) responseUnauthorized(messageID string) {
 	log.Info("Unauthorized client response")
 	head := new(dto.Header)
 	head.Action = dto.Action_Result
-	head.Timestamp = time.Now().Unix()
+	head.Timestamp = time.Now().UnixNano()
 
 	result := new(dto.Result)
 	result.Code = 401
@@ -317,7 +317,7 @@ func (ep *Endpoint) responseBadRequest(messageID string) {
 	log.Info("Bad request response")
 	head := new(dto.Header)
 	head.Action = dto.Action_Result
-	head.Timestamp = time.Now().Unix()
+	head.Timestamp = time.Now().UnixNano()
 
 	result := new(dto.Result)
 	result.Code = 400
@@ -335,7 +335,7 @@ func (ep *Endpoint) responseInternalError(messageID string) {
 	log.Info("Internal server response")
 	head := new(dto.Header)
 	head.Action = dto.Action_Result
-	head.Timestamp = time.Now().Unix()
+	head.Timestamp = time.Now().UnixNano()
 
 	result := new(dto.Result)
 	result.Code = 500
