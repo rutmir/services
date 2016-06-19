@@ -93,11 +93,12 @@ func main() {
 
 	go func() {
 		for d := range msgs {
-			log.Info("Work on message: %s", d.CorrelationId)
 
 			im := new(dto.InternalMessage)
 			err := proto.Unmarshal(d.Body, im)
 			failOnError(err, "Failed to decode body to InternalMessage")
+
+			log.Info("Work on message: %s, action: %s", d.CorrelationId, im.Header.Action)
 
 			err = ch.Publish(
 				"",        // exchange

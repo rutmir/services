@@ -5,6 +5,7 @@ import (
 	"time"
 
 	mc "github.com/bradfitz/gomemcache/memcache"
+	"os"
 )
 
 // MemCache interface provide functions to operate with memcached
@@ -82,6 +83,25 @@ func GetInstance(cacheTarget, prefix string, v ...string) (MemCache, error) {
 		result.Source = MemcacheD
 		result.Prefix = prefix + "_"
 		result.Client = mc.New(v...)
+		result.Client.Timeout = time.Second * 5
+		return result, nil
+	}
+	return nil, fmt.Errorf("%v not implemented", cacheTarget)
+}
+
+// GetLocalInstance return instance of MemCache object
+func GetLocalInstance(cacheTarget, prefix string) (MemCache, error) {
+	params := os.Getenv("MEMCACHE_URL")
+	if len(params) == 0 {
+		return nil, fmt.Errorf("MEMCACHE error: Required to set 'MEMCACHE_URL' environment")
+	}
+
+	switch cacheTarget {
+	case "memcached":
+		result := new(memcachedObject)
+		result.Source = MemcacheD
+		result.Prefix = prefix + "_"
+		result.Client = mc.New(params)
 		result.Client.Timeout = time.Second * 5
 		return result, nil
 	}

@@ -19,14 +19,14 @@ import (
 const (
 	authTypeBasic byte = iota
 
-//authTypeBearer
+	//authTypeBearer
 )
 
 const (
 	grantTypePassword byte = iota
 	grantTypeRefreshToken
 
-//grantTypeAuthorizationCode
+	//grantTypeAuthorizationCode
 )
 
 type authData struct {
@@ -228,7 +228,7 @@ func createUserProfile(newProf *models.UserProfile) error {
 
 func init() {
 	var err error
-	memCtrl, err = memcache.GetInstance("memcached", "test", "192.168.2.177:11211")
+	memCtrl, err = memcache.GetLocalInstance("memcached", "test")
 	if err != nil {
 		log.Fatal(err)
 	}

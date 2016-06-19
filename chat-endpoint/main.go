@@ -28,7 +28,7 @@ func main() {
 	log.Info("Initialize Chat End point")
 
 	var err error
-	memCtrl, err = memcache.GetInstance("memcached", "test", "192.168.2.177:11211")
+	memCtrl, err = memcache.GetLocalInstance("memcached", "test")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -370,7 +370,7 @@ func (ep *Endpoint) processMessage(messageID string) {
 
 	if h != nil {
 		msg := new(dto.InternalMessage)
-		msg.Header = *h
+		msg.Header = h
 
 		if rawBody != nil {
 			var b []byte

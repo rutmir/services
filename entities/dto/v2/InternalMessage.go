@@ -10,8 +10,8 @@ var _ = proto.Marshal
 
 // InternalMessage
 type InternalMessage struct {
-	Header Header `protobuf:"varint,1,opt,name=header" json:"header,omitempty"`
-	Body   []byte `protobuf:"bytes,2,opt,name=body" json:"body,omitempty"`
+	Header *Header `protobuf:"bytes,1,req,name=header" json:"header,omitempty"`
+	Body   []byte `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
 }
 
 func (im *InternalMessage) ToString() string {
@@ -32,5 +32,14 @@ func (im *InternalMessage) String() string {
 // ProtoMessage required for proto.Message
 func (*InternalMessage) ProtoMessage() {}
 
+// GetRequiredHeader required for proto.Message
+func (im *InternalMessage) GetHeader() *Header {
+	if im != nil {
+		return im.Header
+	}
+	return nil
+}
+
 func init() {
+	proto.RegisterType((*InternalMessage)(nil), "InternalMessage")
 }

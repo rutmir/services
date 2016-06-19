@@ -1,17 +1,24 @@
 package dal
 
 import (
-	"gopkg.in/mgo.v2"
+	"os"
+
 	"github.com/rutmir/services/core/log"
+	"gopkg.in/mgo.v2"
 )
 
-var Session   *mgo.Session
+var Session *mgo.Session
 
 func init() {
-	eUrl := "192.168.2.177:27017"
-	session, err := mgo.Dial(eUrl)
+	mongoUrl := os.Getenv("MONGO_URL")
+	if len(mongoUrl) == 0 {
+		log.Fatal("MONGO error: Required to set 'MONGO_URL' environment")
+		return
+	}
+
+	session, err := mgo.Dial(mongoUrl)
 	if err != nil {
-		log.Fatal("NO DB Connection to: %s", eUrl)
+		log.Fatal("NO DB Connection to: %s", mongoUrl)
 
 	}
 	Session = session

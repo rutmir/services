@@ -10,8 +10,8 @@ var _ = proto.Marshal
 
 // Header
 type Header struct {
-	Timestamp int64  `protobuf:"varint,1,opt,name=timestamp" json:"timestamp,omitempty"`
-	Action    Action `protobuf:"bytes,2,opt,name=action,json=action,enum=v2.Action" json:"action,omitempty"`
+	Timestamp int64  `protobuf:"varint,1,req,name=timestamp" json:"timestamp,omitempty"`
+	Action    Action `protobuf:"bytes,2,req,name=action,json=action,enum=v2.Action" json:"action,omitempty"`
 	Meta      string `protobuf:"bytes,3,opt,name=meta" json:"meta,omitempty"`
 }
 
@@ -34,4 +34,5 @@ func (h *Header) String() string {
 func (*Header) ProtoMessage() {}
 
 func init() {
+	proto.RegisterType((*Header)(nil), "Header")
 }

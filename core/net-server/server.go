@@ -96,7 +96,7 @@ func handleConnection(socket *NetSocket, bufferSize int) {
 		if reqLen == 0 {
 			break
 		} else {
-			socket.OnData(buf)
+			socket.OnData(buf[:reqLen])
 		}
 		buf = make([]byte, bufferSize)
 	}
