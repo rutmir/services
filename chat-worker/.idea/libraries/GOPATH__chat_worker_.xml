@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="GOPATH &lt;gab-backend&gt;">
+  <library name="GOPATH &lt;chat-worker&gt;">
     <CLASSES>
       <root url="file://C:/Go.Path/src/services" />
       <root url="file://C:/Go.Path/src/golang.org" />

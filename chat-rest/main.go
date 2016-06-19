@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/codegangsta/negroni"
+	"github.com/rutmir/services/chat-rest/server"
 	"github.com/rutmir/services/core/log"
-	"github.com/rutmir/services/web-rest/server"
 )
 
 func main() {

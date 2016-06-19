@@ -15,18 +15,19 @@ import (
 
 // EventBusInterface is used for all AMQP interaction
 type EventBusInterface struct {
+	Available bool
+	Conn      *amqp.Connection
+
 	host      string
 	port      string
 	user      string
 	password  string
-	Available bool
 	channel   *amqp.Channel
 	queue     amqp.Queue
-	Conn      *amqp.Connection
 	listener  func(map[string]interface{}, string)
 }
 
-// Initialize inits EventBusInterface, connects to RabbitMQ
+// GetInstance - Initialize EventBusInterface, connects to RabbitMQ
 func GetInstance() *EventBusInterface {
 	fmt.Println("Initializing Event Bus...")
 	eventBus := new(EventBusInterface)

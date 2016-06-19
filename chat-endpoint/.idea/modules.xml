@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/gab-backend.iml" filepath="$PROJECT_DIR$/gab-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chat-endpoint.iml" filepath="$PROJECT_DIR$/chat-endpoint.iml" />
     </modules>
   </component>
 </project>

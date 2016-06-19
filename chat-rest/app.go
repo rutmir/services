@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/rutmir/services/web-rest/server"
+	"github.com/rutmir/services/chat-rest/server"
 )
 
 var router *mux.Router
