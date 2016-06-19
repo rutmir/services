@@ -24,79 +24,6 @@ const (
 var memCtrl memcache.MemCache
 var server *ns.NetServer
 
-func main() {
-	log.Info("Initialize Chat End point")
-
-	var err error
-	memCtrl, err = memcache.GetLocalInstance("memcached", "test")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	server = ns.CreateServer()
-	server.Type = ns.ServerTypeTcp
-	server.Host = "localhost"
-	server.Port = 3333
-	server.BufferSize = 4096
-
-	server.OnConnection = func(socket *ns.NetSocket) {
-		ep := new(Endpoint)
-
-		ep.Socket = socket
-		ep.packageProcessor = ep.handleUnauthorizedPackage
-		ep.BufferSize = 4096
-		ep.msgHeadersMap = make(map[string]*dto.Header)
-		ep.msgBodyMap = make(map[string]map[int][]byte)
-
-		if err := ep.initAmqp(); err != nil {
-
-		}
-
-		socket.OnError = func(err error) {
-			log.Err("sock 'on error': %v", err)
-		}
-
-		socket.OnClose = func() {
-			log.Info("Socket closed")
-			ep.dispose()
-		}
-
-		socket.OnData = func(data []byte) {
-			source := append(ep.chunk, data...)
-			hasData := true
-
-			for hasData == true {
-				size := int16(binary.LittleEndian.Uint16(source[0:2])) // read first two bites
-				length := len(source)
-
-				log.Info("size: %v", size)
-
-				if size > 0 && length >= int(size+2) {
-					log.Info("Extract package")
-					pack := new(dto.Package)
-
-					if err := proto.Unmarshal(source[2:size+2], pack); err != nil {
-						log.Warn(err)
-					} else {
-						ep.packageProcessor(pack)
-					}
-
-					source = source[size+2:]
-				} else {
-					log.Info("Save chunk")
-					ep.chunk = source
-					hasData = false
-				}
-			}
-		}
-	}
-
-	log.Info("Start Chat End point")
-	if err := server.Run(); err != nil {
-		fmt.Println(err.Error())
-	}
-}
-
 type funcPackageHandle func(pack *dto.Package)
 
 // Endpoint - realisation of chat socket endpoint
@@ -467,4 +394,77 @@ func (ep *Endpoint) dispose() {
 	//if ep.amqpMessages != nil {
 	//	close(ep.amqpMessages)
 	//}
+}
+
+func main() {
+	log.Info("Initialize Chat End point")
+
+	var err error
+	memCtrl, err = memcache.GetLocalInstance("memcached", "test")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server = ns.CreateServer()
+	server.Type = ns.ServerTypeTcp
+	server.Host = "localhost"
+	server.Port = 3333
+	server.BufferSize = 4096
+
+	server.OnConnection = func(socket *ns.NetSocket) {
+		ep := new(Endpoint)
+
+		ep.Socket = socket
+		ep.packageProcessor = ep.handleUnauthorizedPackage
+		ep.BufferSize = 4096
+		ep.msgHeadersMap = make(map[string]*dto.Header)
+		ep.msgBodyMap = make(map[string]map[int][]byte)
+
+		if err := ep.initAmqp(); err != nil {
+
+		}
+
+		socket.OnError = func(err error) {
+			log.Err("sock 'on error': %v", err)
+		}
+
+		socket.OnClose = func() {
+			log.Info("Socket closed")
+			ep.dispose()
+		}
+
+		socket.OnData = func(data []byte) {
+			source := append(ep.chunk, data...)
+			hasData := true
+
+			for hasData == true {
+				size := int16(binary.LittleEndian.Uint16(source[0:2])) // read first two bites
+				length := len(source)
+
+				log.Info("size: %v", size)
+
+				if size > 0 && length >= int(size+2) {
+					log.Info("Extract package")
+					pack := new(dto.Package)
+
+					if err := proto.Unmarshal(source[2:size+2], pack); err != nil {
+						log.Warn(err)
+					} else {
+						ep.packageProcessor(pack)
+					}
+
+					source = source[size+2:]
+				} else {
+					log.Info("Save chunk")
+					ep.chunk = source
+					hasData = false
+				}
+			}
+		}
+	}
+
+	log.Info("Start Chat End point")
+	if err := server.Run(); err != nil {
+		fmt.Println(err.Error())
+	}
 }

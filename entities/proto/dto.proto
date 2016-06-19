@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message Header {
+    int64 timestamp = 1;
+    string action = 2;
+    string meta = 3;
+}
+
+message InternalMessage {
+    Header header = 1;
+    bytes body = 2;
+}

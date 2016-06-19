@@ -17,8 +17,11 @@ const (
 	rtPrefix = "rt_"
 )
 
+type funcPackageHandle func(im *dto.InternalMessage)
+
 var memCtrl memcache.MemCache
 var channel *amqp.Channel
+var handlers map[dto.Action]*dto.InternalMessage
 
 func failOnError(err error, msg string) {
 	if err != nil {
@@ -64,6 +67,9 @@ func responseInternalError(d *amqp.Delivery) {
 
 func main() {
 	log.Info("Initialize chat worker")
+
+	handlers = make(map[dto.Action]*dto.InternalMessage)
+	handlers[dto.Action_GetProfile] = nil
 
 	var err error
 	memCtrl, err = memcache.GetLocalInstance("memcached", "test")
