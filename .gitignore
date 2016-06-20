@@ -4,6 +4,7 @@ core/log/.idea
 core/memcache/.idea
 core/messaging/.idea
 core/net-server/.idea
+core/socket-server/.idea
 entities/.idea
 chat-rest/.idea
 chat-worker/.idea

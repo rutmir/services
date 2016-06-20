@@ -12,7 +12,7 @@ import (
 
 	"github.com/rutmir/services/core/log"
 	"github.com/rutmir/services/core/memcache"
-	ns "github.com/rutmir/services/core/net-server"
+	ns "github.com/rutmir/services/core/socket-server"
 	dto "github.com/rutmir/services/entities/dto/v2"
 )
 
@@ -26,6 +26,12 @@ var server *ns.NetServer
 
 type funcPackageHandle func(pack *dto.Package)
 
+type internalResponse struct {
+	messageID string
+	header    *dto.Header
+	body      []byte
+}
+
 // Endpoint - realisation of chat socket endpoint
 type Endpoint struct {
 	Socket           *ns.NetSocket
@@ -33,6 +39,7 @@ type Endpoint struct {
 	Auth             *dto.AuthTokenMem
 	chunk            []byte
 	packagePipe      chan *dto.Package
+	responsePipe     chan *internalResponse
 	packageProcessor funcPackageHandle
 	msgHeadersMap    map[string]*dto.Header
 	msgBodyMap       map[string]map[int][]byte
@@ -42,6 +49,103 @@ type Endpoint struct {
 	amqpMessages     <-chan amqp.Delivery
 }
 
+// Predefined responses
+func (ep *Endpoint) responseSuccess(messageID string) {
+	log.Info("Success response")
+	header := new(dto.Header)
+	header.Action = dto.Action_Result
+	header.Timestamp = time.Now().UnixNano()
+	header.Meta = "200"
+
+	result := new(dto.Result)
+	result.Code = 200
+	result.Result = "Success"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Warn(err)
+	} else {
+		resp := new(internalResponse)
+		resp.messageID = messageID
+		resp.header = header
+		resp.body = data
+
+		ep.responsePipe <- resp
+	}
+}
+
+func (ep *Endpoint) responseUnauthorized(messageID string) {
+	log.Info("Unauthorized client response")
+	header := new(dto.Header)
+	header.Action = dto.Action_Result
+	header.Timestamp = time.Now().UnixNano()
+	header.Meta = "401"
+
+	result := new(dto.Result)
+	result.Code = 401
+	result.Result = "Error"
+	result.Message = "Unauthorized"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Warn(err)
+	} else {
+		resp := new(internalResponse)
+		resp.messageID = messageID
+		resp.header = header
+		resp.body = data
+
+		ep.responsePipe <- resp
+	}
+}
+
+func (ep *Endpoint) responseBadRequest(messageID string) {
+	log.Info("Bad request response")
+	header := new(dto.Header)
+	header.Action = dto.Action_Result
+	header.Timestamp = time.Now().UnixNano()
+	header.Meta = "400"
+
+	result := new(dto.Result)
+	result.Code = 400
+	result.Result = "Error"
+	result.Message = "Bad Request"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Err(err)
+	} else {
+		resp := new(internalResponse)
+		resp.messageID = messageID
+		resp.header = header
+		resp.body = data
+
+		ep.responsePipe <- resp
+	}
+}
+
+func (ep *Endpoint) responseInternalError(messageID string) {
+	log.Info("Internal server response")
+	header := new(dto.Header)
+	header.Action = dto.Action_Result
+	header.Timestamp = time.Now().UnixNano()
+	header.Meta = "500"
+
+	result := new(dto.Result)
+	result.Code = 500
+	result.Result = "Error"
+	result.Message = "Internal server error"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Err(err)
+	} else {
+		resp := new(internalResponse)
+		resp.messageID = messageID
+		resp.header = header
+		resp.body = data
+
+		ep.responsePipe <- resp
+	}
+}
+
+// Lifecycle functionality
 func (ep *Endpoint) initAmqp() error {
 	host := os.Getenv("AMQP_HOST")
 	if len(host) == 0 {
@@ -100,7 +204,6 @@ func (ep *Endpoint) handleUnauthorizedPackage(pack *dto.Package) {
 	}
 	if head.Action != dto.Action_Authorize || len(head.Meta) == 0 {
 		ep.responseUnauthorized(pack.MessageID)
-		ep.destroyEndPoint()
 		return
 	}
 
@@ -108,7 +211,6 @@ func (ep *Endpoint) handleUnauthorizedPackage(pack *dto.Package) {
 	if err != nil {
 		log.Err(err)
 		ep.responseUnauthorized(pack.MessageID)
-		ep.destroyEndPoint()
 		return
 	}
 
@@ -116,7 +218,6 @@ func (ep *Endpoint) handleUnauthorizedPackage(pack *dto.Package) {
 	if err := proto.Unmarshal(mem.Value, auth); err != nil {
 		log.Err(err)
 		ep.responseUnauthorized(pack.MessageID)
-		ep.destroyEndPoint()
 		return
 	}
 	ep.Auth = auth
@@ -132,7 +233,6 @@ func (ep *Endpoint) handleUnauthorizedPackage(pack *dto.Package) {
 	if err != nil {
 		log.Err(err) // "Failed to declare a queue"
 		ep.responseInternalError(pack.MessageID)
-		ep.destroyEndPoint()
 		return
 	}
 
@@ -150,7 +250,6 @@ func (ep *Endpoint) handleUnauthorizedPackage(pack *dto.Package) {
 	if err != nil {
 		log.Err(err) // "Failed to register a consumer"
 		ep.responseInternalError(pack.MessageID)
-		ep.destroyEndPoint()
 		return
 	}
 
@@ -161,6 +260,7 @@ func (ep *Endpoint) handleUnauthorizedPackage(pack *dto.Package) {
 	go ep.runPackagePipe()
 	ep.packageProcessor = ep.handlePackage
 
+	ep.responseSuccess(pack.MessageID)
 	log.Info(head.ToString())
 }
 
@@ -170,112 +270,34 @@ func (ep *Endpoint) handlePackage(pack *dto.Package) {
 	ep.packagePipe <- pack
 }
 
-func (ep *Endpoint) handleResponse(messageID string, head *dto.Header, body []byte) {
-	if h, err := proto.Marshal(head); err != nil {
-		log.Warn(err)
-	} else {
-		if body != nil && len(body) > 0 {
-			pack := new(dto.Package)
-			pack.MessageID = messageID
-			pack.PackageNo = 0
-			pack.Closed = false
-			pack.Data = h
-
-			if p, err := proto.Marshal(pack); err != nil {
-				log.Err(err)
-			} else {
-				ep.writeToSocket(p)
-				lastSentIdx := 0
-				length := len(body)
-
-				for lastSentIdx < length {
-					nextSentCnt := ep.BufferSize - 2
-					if lastSentIdx+nextSentCnt >= length {
-						nextSentCnt = length - lastSentIdx
-						pack.Closed = true
-					}
-					pack.PackageNo++
-					pack.Data = body[lastSentIdx : lastSentIdx+nextSentCnt]
-
-					if p, err := proto.Marshal(pack); err != nil {
-						log.Err(err)
-					} else {
-						ep.writeToSocket(p)
-					}
-
-					lastSentIdx += nextSentCnt
-				}
-			}
-		} else {
-			pack := new(dto.Package)
-			pack.MessageID = messageID
-			pack.PackageNo = 0
-			pack.Closed = true
-			pack.Data = h
-
-			if p, err := proto.Marshal(pack); err != nil {
-				log.Err(err)
-			} else {
-				ep.writeToSocket(p)
-			}
-		}
-	}
+func (ep *Endpoint) destroyEndPoint() {
+	log.Info("Destroy socked")
+	ep.Socket.Close()
 }
 
-func (ep *Endpoint) responseUnauthorized(messageID string) {
-	log.Info("Unauthorized client response")
-	head := new(dto.Header)
-	head.Action = dto.Action_Result
-	head.Timestamp = time.Now().UnixNano()
-
-	result := new(dto.Result)
-	result.Code = 401
-	result.Result = "Error"
-	result.Message = "Unauthorized"
-
-	if data, err := proto.Marshal(result); err != nil {
-		log.Warn(err)
-	} else {
-		ep.handleResponse(messageID, head, data)
+func (ep *Endpoint) dispose() {
+	if ep.amqpChannel != nil {
+		ep.amqpChannel.Close()
 	}
+
+	if ep.amqpConnection != nil {
+		ep.amqpConnection.Close()
+	}
+
+	if ep.packagePipe != nil {
+		close(ep.packagePipe)
+	}
+
+	if ep.responsePipe != nil {
+		close(ep.responsePipe)
+	}
+
+	//if ep.amqpMessages != nil {
+	//	close(ep.amqpMessages)
+	//}
 }
 
-func (ep *Endpoint) responseBadRequest(messageID string) {
-	log.Info("Bad request response")
-	head := new(dto.Header)
-	head.Action = dto.Action_Result
-	head.Timestamp = time.Now().UnixNano()
-
-	result := new(dto.Result)
-	result.Code = 400
-	result.Result = "Error"
-	result.Message = "Bad Request"
-
-	if data, err := proto.Marshal(result); err != nil {
-		log.Err(err)
-	} else {
-		ep.handleResponse(messageID, head, data)
-	}
-}
-
-func (ep *Endpoint) responseInternalError(messageID string) {
-	log.Info("Internal server response")
-	head := new(dto.Header)
-	head.Action = dto.Action_Result
-	head.Timestamp = time.Now().UnixNano()
-
-	result := new(dto.Result)
-	result.Code = 500
-	result.Result = "Error"
-	result.Message = "Internal server error"
-
-	if data, err := proto.Marshal(result); err != nil {
-		log.Err(err)
-	} else {
-		ep.handleResponse(messageID, head, data)
-	}
-}
-
+// Helpers
 func (ep *Endpoint) writeToSocket(data []byte) {
 	//log.Info("len: %v, data: %v", len(data), data)
 	pref := []byte{0, 0}
@@ -286,57 +308,7 @@ func (ep *Endpoint) writeToSocket(data []byte) {
 	}
 }
 
-func (ep *Endpoint) processMessage(messageID string) {
-	log.Info("messageID: %v", messageID)
-
-	h := ep.msgHeadersMap[messageID]
-	rawBody := ep.msgBodyMap[messageID]
-
-	delete(ep.msgHeadersMap, messageID)
-	delete(ep.msgBodyMap, messageID)
-
-	if h != nil {
-		msg := new(dto.InternalMessage)
-		msg.Header = h
-
-		if rawBody != nil {
-			var b []byte
-			var keys []int
-
-			for k := range rawBody {
-				keys = append(keys, k)
-			}
-			sort.Ints(keys)
-
-			for _, k := range keys {
-				b = append(b, rawBody[k]...)
-			}
-			msg.Body = b
-		}
-
-		if data, err := proto.Marshal(msg); err != nil {
-			log.Err(err)
-			//TODO return error response
-		} else {
-			err := ep.amqpChannel.Publish(
-				"",            // exchange
-				"chat_worker", // routing key
-				false,         // mandatory
-				false,         // immediate
-				amqp.Publishing{
-					ContentType:   "application/x-protobuf",
-					CorrelationId: messageID,
-					ReplyTo:       ep.amqpQueue.Name,
-					Body:          data,
-				})
-			if err != nil {
-				log.Err(err)
-				//TODO return error response
-			}
-		}
-	}
-}
-
+// Subroutines
 func (ep *Endpoint) runPackagePipe() {
 	for pack := range ep.packagePipe {
 		if len(pack.MessageID) == 0 {
@@ -362,7 +334,112 @@ func (ep *Endpoint) runPackagePipe() {
 		}
 
 		if pack.Closed {
-			ep.processMessage(pack.MessageID)
+			log.Info("messageID: %v", pack.MessageID)
+
+			h := ep.msgHeadersMap[pack.MessageID]
+			rawBody := ep.msgBodyMap[pack.MessageID]
+
+			delete(ep.msgHeadersMap, pack.MessageID)
+			delete(ep.msgBodyMap, pack.MessageID)
+
+			if h != nil {
+				msg := new(dto.InternalMessage)
+				msg.Header = h
+
+				if rawBody != nil {
+					var b []byte
+					var keys []int
+
+					for k := range rawBody {
+						keys = append(keys, k)
+					}
+					sort.Ints(keys)
+
+					for _, k := range keys {
+						b = append(b, rawBody[k]...)
+					}
+					msg.Body = b
+				}
+
+				if data, err := proto.Marshal(msg); err != nil {
+					log.Err(err)
+					ep.responseInternalError(pack.MessageID)
+				} else {
+					err := ep.amqpChannel.Publish(
+						"",            // exchange
+						"chat_worker", // routing key
+						false,         // mandatory
+						false,         // immediate
+						amqp.Publishing{
+							ContentType:   "application/x-protobuf",
+							CorrelationId: pack.MessageID,
+							ReplyTo:       ep.amqpQueue.Name,
+							Body:          data,
+						})
+					if err != nil {
+						log.Err(err)
+						ep.responseInternalError(pack.MessageID)
+					}
+				}
+			}
+		}
+	}
+}
+
+func (ep *Endpoint) runResponsePipe() {
+	for resp := range ep.responsePipe {
+		if h, err := proto.Marshal(resp.header); err != nil {
+			log.Warn(err)
+		} else {
+			if resp.body != nil && len(resp.body) > 0 {
+				pack := new(dto.Package)
+				pack.MessageID = resp.messageID
+				pack.PackageNo = 0
+				pack.Closed = false
+				pack.Data = h
+
+				if p, err := proto.Marshal(pack); err != nil {
+					log.Err(err)
+				} else {
+					ep.writeToSocket(p)
+					lastSentIdx := 0
+					length := len(resp.body)
+
+					for lastSentIdx < length {
+						nextSentCnt := ep.BufferSize - 2
+						if lastSentIdx+nextSentCnt >= length {
+							nextSentCnt = length - lastSentIdx
+							pack.Closed = true
+						}
+						pack.PackageNo++
+						pack.Data = resp.body[lastSentIdx : lastSentIdx+nextSentCnt]
+
+						if p, err := proto.Marshal(pack); err != nil {
+							log.Err(err)
+						} else {
+							ep.writeToSocket(p)
+						}
+
+						lastSentIdx += nextSentCnt
+					}
+				}
+			} else {
+				pack := new(dto.Package)
+				pack.MessageID = resp.messageID
+				pack.PackageNo = 0
+				pack.Closed = true
+				pack.Data = h
+
+				if p, err := proto.Marshal(pack); err != nil {
+					log.Err(err)
+				} else {
+					ep.writeToSocket(p)
+				}
+			}
+
+			if resp.header.Meta == "401" || resp.header.Meta == "500" {
+				ep.destroyEndPoint()
+			}
 		}
 	}
 }
@@ -370,30 +447,20 @@ func (ep *Endpoint) runPackagePipe() {
 func (ep *Endpoint) runWorkerPipe() {
 	for d := range ep.amqpMessages {
 		log.Info("Response form worker with: %s", d.CorrelationId)
+		im := new(dto.InternalMessage)
+		if err := proto.Unmarshal(d.Body, im); err != nil {
+			log.Err(err)
+			ep.responseInternalError(d.CorrelationId)
+			d.Ack(false)
+		} else {
+			resp := new(internalResponse)
+			resp.messageID = d.CorrelationId
+			resp.header = im.Header
+			resp.body = im.Body
+
+			ep.responsePipe <- resp
+		}
 	}
-}
-
-func (ep *Endpoint) destroyEndPoint() {
-	log.Info("Destroy socked")
-	ep.Socket.Close()
-}
-
-func (ep *Endpoint) dispose() {
-	if ep.amqpChannel != nil {
-		ep.amqpChannel.Close()
-	}
-
-	if ep.amqpConnection != nil {
-		ep.amqpConnection.Close()
-	}
-
-	if ep.packagePipe != nil {
-		close(ep.packagePipe)
-	}
-
-	//if ep.amqpMessages != nil {
-	//	close(ep.amqpMessages)
-	//}
 }
 
 func main() {
@@ -419,6 +486,9 @@ func main() {
 		ep.BufferSize = 4096
 		ep.msgHeadersMap = make(map[string]*dto.Header)
 		ep.msgBodyMap = make(map[string]map[int][]byte)
+		ep.responsePipe = make(chan *internalResponse)
+
+		go ep.runResponsePipe()
 
 		if err := ep.initAmqp(); err != nil {
 

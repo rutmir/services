@@ -30,10 +30,11 @@ func failOnError(err error, msg string) {
 }
 
 func responseInternalError(d *amqp.Delivery) {
-	log.Info("Bad request response")
+	log.Info("Internal server error response")
 	h := new(dto.Header)
 	h.Action = dto.Action_Result
 	h.Timestamp = time.Now().UnixNano()
+	h.Meta = "500"
 
 	result := new(dto.Result)
 	result.Code = 500
@@ -43,26 +44,74 @@ func responseInternalError(d *amqp.Delivery) {
 	if data, err := proto.Marshal(result); err != nil {
 		log.Err(err)
 	} else {
-		msg := new(dto.InternalMessage)
-		msg.Header = h
-		msg.Body = data
-
-		if data, err := proto.Marshal(msg); err != nil {
+		if err := sentResponse(d.ReplyTo, d.CorrelationId, h, data); err != nil {
 			log.Err(err)
-		} else {
-			err = channel.Publish(
-				"",        // exchange
-				d.ReplyTo, // routing key
-				false,     // mandatory
-				false,     // immediate
-				amqp.Publishing{
-					ContentType:   "application/x-protobuf",
-					CorrelationId: d.CorrelationId,
-					Body:          data,
-				})
-			failOnError(err, "Failed to publish a message")
 		}
 	}
+}
+
+func responseUnauthorized(d *amqp.Delivery) {
+	log.Info("Unauthorized client response")
+	h := new(dto.Header)
+	h.Action = dto.Action_Result
+	h.Timestamp = time.Now().UnixNano()
+	h.Meta = "401"
+
+	result := new(dto.Result)
+	result.Code = 401
+	result.Result = "Error"
+	result.Message = "Unauthorized"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Err(err)
+	} else {
+		if err := sentResponse(d.ReplyTo, d.CorrelationId, h, data); err != nil {
+			log.Err(err)
+		}
+	}
+}
+
+func responseSuccess(d *amqp.Delivery) {
+	log.Info("Success response")
+	h := new(dto.Header)
+	h.Action = dto.Action_Result
+	h.Timestamp = time.Now().UnixNano()
+	h.Meta = "200"
+
+	result := new(dto.Result)
+	result.Code = 200
+	result.Result = "Success"
+
+	if data, err := proto.Marshal(result); err != nil {
+		log.Err(err)
+	} else {
+		if err := sentResponse(d.ReplyTo, d.CorrelationId, h, data); err != nil {
+			log.Err(err)
+		}
+	}
+}
+
+func sentResponse(replyTo, messageID string, h *dto.Header, data []byte) error {
+	msg := new(dto.InternalMessage)
+	msg.Header = h
+	msg.Body = data
+
+	body, err := proto.Marshal(msg)
+	if err != nil {
+		return err
+	}
+
+	err = channel.Publish(
+		"",      // exchange
+		replyTo, // routing key
+		false,   // mandatory
+		false,   // immediate
+		amqp.Publishing{
+			ContentType:   "application/x-protobuf",
+			CorrelationId: messageID,
+			Body:          body,
+		})
+	return err
 }
 
 func main() {
@@ -146,15 +195,15 @@ func main() {
 
 	go func() {
 		for d := range msgs {
-
 			im := new(dto.InternalMessage)
 			err := proto.Unmarshal(d.Body, im)
 			failOnError(err, "Failed to decode body to InternalMessage")
 
 			mem, err := memCtrl.Get(atPrefix + d.ReplyTo)
-			if err != nil {
+			if err != nil || mem == nil {
 				log.Err(err)
-				responseInternalError(&d)
+				responseUnauthorized(&d)
+				d.Ack(false)
 				continue
 			}
 
@@ -162,22 +211,25 @@ func main() {
 			if err := proto.Unmarshal(mem.Value, auth); err != nil {
 				log.Err(err)
 				responseInternalError(&d)
+				d.Ack(false)
 				continue
 			}
 
 			log.Info("Work on message: %s, action: %s, for: %s", d.CorrelationId, im.Header.Action, auth.ProfileID.Hex())
 
-			err = channel.Publish(
-				"",        // exchange
-				d.ReplyTo, // routing key
-				false,     // mandatory
-				false,     // immediate
-				amqp.Publishing{
-					ContentType:   "text/plain",
-					CorrelationId: d.CorrelationId,
-					Body:          []byte(im.Header.Action),
-				})
-			failOnError(err, "Failed to publish a message")
+			/*err = channel.Publish(
+			"",        // exchange
+			d.ReplyTo, // routing key
+			false,     // mandatory
+			false,     // immediate
+			amqp.Publishing{
+				ContentType:   "text/plain",
+				CorrelationId: d.CorrelationId,
+				Body:          []byte(im.Header.Action),
+			})
+			failOnError(err, "Failed to publish a message")*/
+
+			responseSuccess(&d)
 			d.Ack(false)
 		}
 	}()
