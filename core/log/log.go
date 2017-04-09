@@ -6,6 +6,8 @@ import (
 	"strings"
 	"strconv"
 	"runtime"
+	"net/http"
+	"time"
 )
 
 type Level byte
@@ -27,6 +29,16 @@ const (
 )
 
 var settings *LogSettings
+
+// HttpLogger - logger for every http requests
+func HttpLogger(inner http.Handler, name string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		inner.ServeHTTP(w, r)
+		Info("%s\t%s\t%s\t%s\n", r.Method, r.RequestURI, name, time.Since(start))
+	})
+}
+
 
 /*API*/
 
