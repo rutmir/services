@@ -1,16 +1,12 @@
 package messaging
 
-// @SubApi Config Management API [/api/v1/config]
-//go:generate swagger generate spec
-
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"os"
 
-	"github.com/streadway/amqp"
-//"google.golang.org/appengine/log"
 	"github.com/rutmir/services/core/log"
+	"github.com/streadway/amqp"
 )
 
 // EventBusInterface is used for all AMQP interaction
@@ -18,25 +14,25 @@ type EventBusInterface struct {
 	Available bool
 	Conn      *amqp.Connection
 
-	host      string
-	port      string
-	user      string
-	password  string
-	channel   *amqp.Channel
-	queue     amqp.Queue
-	listener  func(map[string]interface{}, string)
+	host     string
+	port     string
+	user     string
+	password string
+	channel  *amqp.Channel
+	queue    amqp.Queue
+	listener func(map[string]interface{}, string)
 }
 
 // GetInstance - Initialize EventBusInterface, connects to RabbitMQ
 func GetInstance() *EventBusInterface {
-	fmt.Println("Initializing Event Bus...")
+	log.Info("Initializing Event Bus...")
 	eventBus := new(EventBusInterface)
 
 	eventBus.Available = false
 
 	eventBus.port = os.Getenv("AMQP_PORT")
 	if len(eventBus.port) == 0 {
-		if eventBus.failOnError(fmt.Errorf("Initialization error"), "Required to set 'AMQP_PORT' environment") {
+		if eventBus.failOnError(errors.New("initialization error"), "Required to set 'AMQP_PORT' environment") {
 			return eventBus
 		}
 	}
@@ -46,63 +42,63 @@ func GetInstance() *EventBusInterface {
 		eventBus.host = os.Getenv("HOSTNAME")
 	}
 	if len(eventBus.host) == 0 {
-		if eventBus.failOnError(fmt.Errorf("Initialization error"), "Required to set 'AMQP_HOST' environment") {
+		if eventBus.failOnError(errors.New("initialization error"), "Required to set 'AMQP_HOST' environment") {
 			return eventBus
 		}
 	}
 
 	eventBus.user = os.Getenv("AMQP_USERNAME")
 	if len(eventBus.user) == 0 {
-		if eventBus.failOnError(fmt.Errorf("Initialization error"), "Required to set 'AMQP_USERNAME' environment") {
+		if eventBus.failOnError(errors.New("initialization error"), "Required to set 'AMQP_USERNAME' environment") {
 			return eventBus
 		}
 	}
 
 	eventBus.password = os.Getenv("AMQP_PASS")
 	if len(eventBus.password) == 0 {
-		if eventBus.failOnError(fmt.Errorf("Initialization error"), "Required to set 'AMQP_PASS' environment") {
+		if eventBus.failOnError(errors.New("initialization error"), "Required to set 'AMQP_PASS' environment") {
 			return eventBus
 		}
 	}
 
 	//Make connection
 	amqpServerURL := "amqp://" + eventBus.user + ":" + eventBus.password + "@" + eventBus.host + ":" + eventBus.port + "/"
-	fmt.Println(amqpServerURL)
+	log.Info(amqpServerURL)
 	conn, err := amqp.Dial(amqpServerURL)
-	if eventBus.failOnError(err, "Failed to connect to RabbitMQ") {
+	if eventBus.failOnError(err, "failed to connect to RabbitMQ") {
 		return eventBus
 	}
 	eventBus.Conn = conn
 	//defer conn.Close()
 
 	ch, err := conn.Channel()
-	if eventBus.failOnError(err, "Failed to open a channel") {
+	if eventBus.failOnError(err, "failed to open a channel") {
 		return eventBus
 	}
 	//defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		"contetto.eventbus", // name
-		"topic", // type
-		true, // durable
-		false, // auto-deleted
-		false, // internal
-		false, // no-wait
-		nil, // arguments
+		"optima.eventbus", // name
+		"topic",           // type
+		true,              // durable
+		false,             // auto-deleted
+		false,             // internal
+		false,             // no-wait
+		nil,               // arguments
 	)
-	if eventBus.failOnError(err, "Failed to declare an exchange") {
+	if eventBus.failOnError(err, "failed to declare an exchange") {
 		return eventBus
 	}
 
 	q, err := ch.QueueDeclare(
-		"", // name
+		"",    // name
 		false, // durable
-		false, // delete when usused
-		true, // exclusive
+		false, // delete when unused
+		true,  // exclusive
 		false, // no-wait
-		nil, // arguments
+		nil,   // arguments
 	)
-	if eventBus.failOnError(err, "Failed to declare a queue") {
+	if eventBus.failOnError(err, "failed to declare a queue") {
 		return eventBus
 	}
 
@@ -117,22 +113,22 @@ func GetInstance() *EventBusInterface {
 
 // BroadcastToAll sends message to all listeners
 func (eventBus *EventBusInterface) BroadcastToAll(message map[string]interface{}) (bool, error) {
-	//contetto.eventbus.common
+	//optima.eventbus.common
 	message["__group"] = "all"
-	return eventBus.sendMessage(message, "contetto.eventbus", "contetto.eventbus.common")
+	return eventBus.sendMessage(message, "optima.eventbus", "optima.eventbus.common")
 }
 
 // BroadcastInternal sends message internal channel
 func (eventBus *EventBusInterface) BroadcastInternal(message map[string]interface{}) (bool, error) {
-	//contetto.eventbus.private
+	//optima.eventbus.private
 	message["__group"] = "internal"
-	return eventBus.sendMessage(message, "contetto.eventbus", "contetto.eventbus.private")
+	return eventBus.sendMessage(message, "optima.eventbus", "optima.eventbus.private")
 }
 
 // BroadcastToSubscribers sends message to a group specified by routingKey
 func (eventBus *EventBusInterface) BroadcastToSubscribers(message map[string]interface{}, routingKey string) (bool, error) {
 	message["__group"] = routingKey
-	return eventBus.sendMessage(message, "contetto.eventbus", routingKey)
+	return eventBus.sendMessage(message, "optima.eventbus", routingKey)
 }
 
 func (eventBus *EventBusInterface) sendMessage(message map[string]interface{}, exchange string, routingKey string) (bool, error) {
@@ -141,15 +137,15 @@ func (eventBus *EventBusInterface) sendMessage(message map[string]interface{}, e
 	}
 
 	body, err := json.Marshal(message)
-	fmt.Println("Sending Event:", exchange, routingKey, string(body))
+	log.Info("Sending Event: %v %v %v", exchange, routingKey, string(body))
 	if err != nil {
 		return false, err
 	}
 	err = eventBus.channel.Publish(
 		exchange,
 		routingKey, // routing key
-		false, // mandatory
-		false, // immediate
+		false,      // mandatory
+		false,      // immediate
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        body,
@@ -173,41 +169,41 @@ func (eventBus *EventBusInterface) RemoveListener(id string) {
 
 func (eventBus *EventBusInterface) startListening() {
 	err := eventBus.channel.QueueBind(
-		eventBus.queue.Name, // queue name
-		"contetto.eventbus.private", // routing key
-		"contetto.eventbus", // exchange
+		eventBus.queue.Name,       // queue name
+		"optima.eventbus.private", // routing key
+		"optima.eventbus",         // exchange
 		false,
 		nil)
 	eventBus.failOnError(err, "Failed to bind a queue")
 
 	err = eventBus.channel.QueueBind(
-		eventBus.queue.Name, // queue name
-		"contetto.eventbus.common", // routing key
-		"contetto.eventbus", // exchange
+		eventBus.queue.Name,      // queue name
+		"optima.eventbus.common", // routing key
+		"optima.eventbus",        // exchange
 		false,
 		nil)
-	eventBus.failOnError(err, "Failed to bind a queue")
+	eventBus.failOnError(err, "failed to bind a queue")
 
 	msgs, err := eventBus.channel.Consume(
 		eventBus.queue.Name, // queue
-		"", // consumer
-		true, // auto ack
-		false, // exclusive
-		false, // no local
-		false, // no wait
-		nil, // args
+		"",                  // consumer
+		true,                // auto ack
+		false,               // exclusive
+		false,               // no local
+		false,               // no wait
+		nil,                 // args
 	)
-	eventBus.failOnError(err, "Failed to register a consumer")
+	eventBus.failOnError(err, "failed to register a consumer")
 
 	forever := make(chan bool)
 
 	go func() {
 		for d := range msgs {
 			if eventBus.listener == nil {
-				fmt.Println("Message received but no listener attached.")
+				log.Info("Message received but no listener attached.")
 				continue
 			}
-			fmt.Println("Sending event to listener...")
+			log.Info("Sending event to listener...")
 			var message map[string]interface{}
 			message = make(map[string]interface{})
 			json.Unmarshal([]byte(d.Body), &message)
@@ -229,56 +225,56 @@ func (eventBus *EventBusInterface) SubscribeListener(routingKey string, listener
 		return
 	}
 	ch, err := eventBus.Conn.Channel()
-	if eventBus.failOnError(err, "Failed to open a channel") {
+	if eventBus.failOnError(err, "failed to open a channel") {
 		return
 	}
 	//defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		"contetto.eventbus", // name
-		"topic", // type
-		true, // durable
-		false, // auto-deleted
-		false, // internal
-		false, // no-wait
-		nil, // arguments
+		"optima.eventbus", // name
+		"topic",           // type
+		true,              // durable
+		false,             // auto-deleted
+		false,             // internal
+		false,             // no-wait
+		nil,               // arguments
 	)
-	if eventBus.failOnError(err, "Failed to declare an exchange") {
+	if eventBus.failOnError(err, "failed to declare an exchange") {
 		return
 	}
 
 	q, err := ch.QueueDeclare(
-		"", // name
+		"",    // name
 		false, // durable
 		false, // delete when usused
-		true, // exclusive
+		true,  // exclusive
 		false, // no-wait
-		nil, // arguments
+		nil,   // arguments
 	)
-	if eventBus.failOnError(err, "Failed to declare a queue") {
+	if eventBus.failOnError(err, "failed to declare a queue") {
 		return
 	}
 
 	err = ch.QueueBind(
-		q.Name, // queue name
-		routingKey, // routing key
-		"contetto.eventbus", // exchange
+		q.Name,            // queue name
+		routingKey,        // routing key
+		"optima.eventbus", // exchange
 		false,
 		nil)
-	if eventBus.failOnError(err, "Failed to bind a queue") {
+	if eventBus.failOnError(err, "failed to bind a queue") {
 		return
 	}
 
 	msgs, err := ch.Consume(
 		q.Name, // queue
-		"", // consumer
-		true, // auto ack
-		false, // exclusive
-		false, // no local
-		false, // no wait
-		nil, // args
+		"",     // consumer
+		true,   // auto ack
+		false,  // exclusive
+		false,  // no local
+		false,  // no wait
+		nil,    // args
 	)
-	if eventBus.failOnError(err, "Failed to register a consumer") {
+	if eventBus.failOnError(err, "failed to register a consumer") {
 		return
 	}
 
@@ -286,7 +282,7 @@ func (eventBus *EventBusInterface) SubscribeListener(routingKey string, listener
 
 	go func() {
 		for d := range msgs {
-			fmt.Println("Sending event to Group Listener:", routingKey)
+			log.Info("Sending event to Group Listener: %s", routingKey)
 			var message map[string]interface{}
 			message = make(map[string]interface{})
 			json.Unmarshal([]byte(d.Body), &message)
@@ -298,14 +294,13 @@ func (eventBus *EventBusInterface) SubscribeListener(routingKey string, listener
 		}
 	}()
 
-	log.Info("[" + routingKey + "]Listening for messages.")
+	log.Info("[%s] Listening for messages.", routingKey)
 	<-forever
 }
 
 func (eventBus *EventBusInterface) failOnError(err error, msg string) bool {
 	if err != nil {
-		log.Err("%s: %v\n", msg, err)
-		panic(fmt.Sprintf("%s: %v", msg, err))
+		log.Fatal("%s: %v", msg, err)
 		return true
 	}
 	return false
