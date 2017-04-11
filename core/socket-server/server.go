@@ -1,6 +1,7 @@
 package net_server
 
 import (
+	"errors"
 	"fmt"
 	"net"
 )
@@ -13,10 +14,10 @@ type ServerType string
 
 // NetServer type for net server instance
 type NetServer struct {
-	Type         ServerType
-	Host         string
-	Port         int
-	BufferSize   int
+	Type       ServerType
+	Host       string
+	Port       int
+	BufferSize int
 
 	OnConnection OnConnectionHandler
 }
@@ -104,19 +105,19 @@ func handleConnection(socket *NetSocket, bufferSize int) {
 
 func validateNetServer(ns *NetServer) error {
 	if len(ns.Type) == 0 {
-		return fmt.Errorf("Type is required")
+		return errors.New("Type is required")
 	}
 	if len(ns.Host) == 0 {
-		return fmt.Errorf("Host is required")
+		return errors.New("Host is required")
 	}
 	if ns.Port < 1 || ns.Port > 65535 {
-		return fmt.Errorf("Wrong Port value")
+		return errors.New("Wrong Port value")
 	}
 	if ns.BufferSize < 256 {
-		return fmt.Errorf("Too small BufferSize")
+		return errors.New("Too small BufferSize")
 	}
 	if ns.OnConnection == nil {
-		return fmt.Errorf("OnConnection handler required")
+		return errors.New("OnConnection handler required")
 	}
 	return nil
 }

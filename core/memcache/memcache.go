@@ -1,11 +1,12 @@
 package memcache
 
 import (
+	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	mc "github.com/bradfitz/gomemcache/memcache"
-	"os"
 )
 
 // MemCache interface provide functions to operate with memcached
@@ -45,7 +46,7 @@ func (f *memcachedObject) Get(key string) (*Item, error) {
 func (f *memcachedObject) GetMulti(keys []string) (map[string]*Item, error) {
 	newKeys := make([]string, len(keys))
 	for _, item := range keys {
-		newKeys = append(newKeys, f.Prefix + item)
+		newKeys = append(newKeys, f.Prefix+item)
 	}
 	items, err := f.Client.GetMulti(newKeys)
 	if err != nil {
@@ -93,7 +94,7 @@ func GetInstance(cacheTarget, prefix string, v ...string) (MemCache, error) {
 func GetLocalInstance(cacheTarget, prefix string) (MemCache, error) {
 	params := os.Getenv("MEMCACHE_URL")
 	if len(params) == 0 {
-		return nil, fmt.Errorf("MEMCACHE error: Required to set 'MEMCACHE_URL' environment")
+		return nil, errors.New("MEMCACHE error: Required to set 'MEMCACHE_URL' environment")
 	}
 
 	switch cacheTarget {

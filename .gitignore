@@ -5,6 +5,7 @@ core/memcache/.idea
 core/messaging/.idea
 core/net-server/.idea
 core/socket-server/.idea
+core/k8s/secret/.idea
 entities/.idea
 chat-rest/.idea
 chat-worker/.idea

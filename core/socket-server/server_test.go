@@ -1,8 +1,8 @@
 package net_server
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 var server *NetServer
@@ -34,7 +34,6 @@ func TestMain(m *testing.M) {
 
 func TestInitial(t *testing.T) {
 	if server == nil {
-		t.Fatalf("failed to Create")
+		t.Fatal("failed to Create")
 	}
 }
-
